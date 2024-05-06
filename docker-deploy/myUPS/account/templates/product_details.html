@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-left mt-5">
+    <h1>My Products</h1>
+    {% if user.is_authenticated %}
+
+    {% if user_id == request.user.id %}
+
+    {% if products %}
+    <ul class="list-group">
+
+        {% for product in products %}
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col">
+                    <div>
+                        <h2>Product ID: {{ product.product_id }}</h2>
+                    </div>
+                    <div>
+                        <h2>Description: {{ product.description }}</h2>
+                    </div>
+                    <div>
+                        <h2>Count: {{ product.count }}</h2>
+                    </div>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+
+        {% else %}
+        <p>No prodcuts found.</p>
+        {% endif %}
+
+    </ul>
+    {% else %}
+    This package does not belong to your UPS account!
+    {% endif %}
+
+    {% else %}
+    <p>You are not log in! <a href="{% url 'user_login' %}">Log In</a></p>
+    {% endif %}
+</div>
+
+{% endblock %}

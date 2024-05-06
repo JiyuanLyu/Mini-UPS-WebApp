@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-left mt-5">
+    <h1>Package Information</h1>
+
+    <li class="list-group-item">
+        <div class="row">
+            {% if package.user_id %}
+            {% if user.is_authenticated %}
+            {% if package.user_id_id == request.user.id %}
+            <div class="col">
+                <div>
+                    <h2>Package ID: {{ package.packageid }}</h2>
+                </div>
+                <div>
+                    <p>Status: {{ package.status }}</p>
+                </div>
+            </div>
+            <div class="col-auto d-flex align-items-start">
+                <a href="{% url 'modify_dest' package.packageid %}" class="btn btn-outline-warning">Edit
+                    Destiniaton</a>
+            </div>
+            <div class="col-auto d-flex align-items-start">
+                <a href="{% url 'product_details' package.packageid %}" class="btn btn-outline-warning">Product
+                    Details</a>
+            </div>
+            <div class="col-auto d-flex align-items-start">
+                <a href="{% url 'delivery_map' package.packageid %}" class="btn btn-outline-warning">Delivery Map</a>
+            </div>
+            {% else %}
+            <div class="col-auto d-flex align-items-start">
+                This package does not belong to your UPS account!
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="col">
+                <div>
+                    <h2>Package ID: {{ package.packageid }}</h2>
+                </div>
+                <div>
+                    <p>Status: {{ package.status }}</p>
+                </div>
+            </div>
+            <div class="col-auto d-flex align-items-start">
+                <a href="{% url 'delivery_map' package.packageid %}" class="btn btn-outline-warning">Delivery Map</a>
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="col">
+                <div>
+                    <h2>Package ID: {{ package.packageid }}</h2>
+                </div>
+                <div>
+                    <p>Status: {{ package.status }}</p>
+                </div>
+            </div>
+            <div class="col-auto d-flex align-items-start">
+                <a href="{% url 'delivery_map' package.packageid %}" class="btn btn-outline-warning">Delivery Map</a>
+            </div>
+            {% endif %}
+        </div>
+    </li>
+</div>
+
+{% endblock %}

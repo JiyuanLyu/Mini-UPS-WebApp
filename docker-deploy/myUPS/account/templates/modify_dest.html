@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-left mt-5">
+    <h1>Modify Destination</h1>
+    {% if user.is_authenticated %}
+
+    {% if package.user_id_id == request.user.id %}
+    <li class="list-group-item">
+        <div class="row">
+            <form method="POST">
+                {% csrf_token %}
+                <label for="dest_x">New Destination X:</label>
+                <input type="text" id="dest_x" name="dest_x" value="{{ package.dest_x }}"><br>
+                <label for="dest_y">New Destination Y:</label>
+                <input type="text" id="dest_y" name="dest_y" value="{{ package.dest_y }}"><br>
+                <button type="submit" class="btn btn-outline-warning">Update Destination</button>
+            </form>
+        </div>
+    </li>
+    {% else %}
+    <p>This package does not belongs to your account! Please connect your UPS account with Amazon account. </p>
+    {% endif %}
+    
+    {% else %}
+    <p>Log in to edit destination <a href="{% url 'user_login' %}">Log In</a></p>
+    {% endif %}
+</div>
+
+{% endblock %}

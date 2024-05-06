@@ -1,0 +1,25 @@
+Product Differentiation:
+
+1. Searching Package for different account
+
+For the requirement of the ability to enter a tracking number and see the status of the shipment,
+we allow that the people who are not logged in can check the package status and delivery map by searching the corresponding package id. 
+For the safety concern, we suggest to add the ability to confirm the zip code before showing the messages for the real world shipping website. 
+
+For the user who are logged in, they can see their packages status, delivery map and product details by searching the package id or check the My Packages tab.
+They can also search the packages that are not connect with a UPS user account, but they cannot see the product details. 
+What's more, if they search some packages that are not belongs to their account. They cannot see any infomation but a reminder of this package does not belong to them. 
+
+2. Delivery Map
+
+Besides the status of the package delivery, we develop a function of displaying a delivery map of showing the warehouse location and the destination location. 
+The graph of map (displaying  x and y axis) will adapt to the screen depends on the coordinates. 
+
+3. Avoid hacking with URL
+
+To prevent unlogged-in and unauthorized user to see the infomation via editing urls, we make sure that
+    - only logged-in user can see their own packages
+    - only logged-in user can edit their own packages' destinations
+    - only logged-in user can see their account infomation
+    - only logged-in user can see their product details
+Example: User 1 and unlogged-in user cannot see the packages, edit destinations, check the account infomation and product details of User 2.

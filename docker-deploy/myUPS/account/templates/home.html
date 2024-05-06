@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h1>Hello, welcome to UPS!</h1>
+    <form action="{% url 'get_status' %}" method="POST" class="my-3">
+        {% csrf_token %} <!-- Ensure CSRF token is included for POST requests -->
+        <div class="input-group mb-3">
+            <input type="text" id="package_id" name="package_id" class="form-control" placeholder="Enter package id">
+            <button class="btn btn-warning" type="submit">Search</button>
+        </div>
+    </form>
+
+    {% if not user.is_authenticated %}
+    <p>Not registered yet? <a href="/register/" class="btn btn-outline-warning">Register</a></p>
+    <p>Already have an account? <a href="/user_login/" class="btn btn-outline-warning">Login</a></p>
+    {% endif %}
+</div>
+
+{% endblock %}

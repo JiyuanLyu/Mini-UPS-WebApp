@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./myUPS
+    # command: python manage.py runserver 0.0.0.0:8080
+    command: "/app/run.sh"
+    volumes:
+      - ./myUPS:/app
+    ports:
+      - "8080:8080"
+    environment:
+      DJANGO_SETTINGS_MODULE: 'myUPS.settings'
+      # yijia
+      AMAZON_HOST: 'vcm-38978.vm.duke.edu'
+      AMAZON_PORT: '22222'
+      WORLD_HOST: 'vcm-38978.vm.duke.edu'
+      WORLD_PORT: '12345'
+      # kaixin
+      # AMAZON_HOST: 'vcm-38044.vm.duke.edu'
+      # AMAZON_PORT: '9008'
+      # WORLD_HOST: 'vcm-38044.vm.duke.edu'
+      # WORLD_PORT: '12345'
+      # sitang
+      # AMAZON_HOST: "vcm-39217.vm.duke.edu" 
+      # AMAZON_PORT: 1357
+      # WORLD_HOST: "vcm-39217.vm.duke.edu"
+      # WORLD_PORT: 12345
+      DATABASE_HOST: db
+      DATABASE_NAME: postgres
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+    depends_on:
+      - db
+
+  db:
+    image: postgres:12-alpine3.15
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

@@ -1,0 +1,46 @@
+Communication Design:
+1. Amazon initiates connection with the world and sends the world ID to UPS.
+2. UPS acts as a client, establishing a socket connection with Amazon to receive the message containing the world ID.
+3. UPS acts as a client again, establishing a socket connection with the world and sending the "connect" message (UConnect) to establish communication.
+4. If the connection to Amazon fails due to it not listening, an error message is returned.
+ “Watching for file changes with StatReloader
+Performing system checks...
+System check identified no issues (0 silenced).
+All data has been deleted successfully.
+Error: [Errno 111] Connection refused “
+
+
+Message Handling with Threads:
+1. Thread Handling for Message Reception: Utilize two dedicated threads keep running, one for receiving messages from the world and another for receiving messages from the Amazon server.
+2. Message Tracking Mechanism:
+    * Use two dictionaries, send_amazon_seqnum and send_world_seqnum, to store message seqnum with their respective message.
+    * Implement a periodic check, defined by RESEND_MSG_INTERVAL (set to 5), to verify if sent messages have been acknowledged.
+    * Resend messages if they are not acknowledged within the specified interval. Delete it from the dictionaries once recv the ACK.
+3. ThreadPoolExecutor for Request Handling:
+    * Employ a ThreadPoolExecutor with max_workers=50 to efficiently manage incoming requests.
+    * Each incoming request should undergo parsing and be handled accordingly, including database operations, message creation, and message sending, ACK handle, and so on.
+4. Acknowledge Tracking Lists:
+    * Use two lists, send_amazon_ACK and send_world_ACK, to track the request which have been handled and sent AKC back.
+    * This mechanism is due to the possibility of the other side resending the same request. As UPS, we avoid processing requests repeatedly, except for resending ack.
+
+
+Handling Concurrency
+1. Database Concurrency Handling: 
+    Utilizing a separate file (db_handler) with Django ORM for database operations ensures that database concurrency is managed automatically by Django. This simplifies the handling of concurrent database accesses and maintains data integrity.
+2. Global Sequence Number Increment: 
+    Employing a single lock (socket_lock = threading.Lock()) to control the increment of the global current_seqnum variable ensures that only one thread increases it at a time. This prevents conflicts and ensures unique seqnum.
+3. Socket Access Control: 
+    Using the same lock (socket_lock) to control access to the socket for sending messages ensures that only one thread can access the socket at any given time. This prevents concurrent access issues and ensures message sending reliability.
+
+
+Frontend and Backend Connection for Package Management
+Initially, we explored using method such as sockets, WebSockets, or Django Channels for real-time updates of package destinations in our system. After thorough team discussions, we opted for a simpler approach due to operational requirements:
+1. Single Request Strategy: The ups sends a single delivery request to the world for each package dispatch, reducing complexity.
+2. Restriction on Destination Edits: Users can edit package destinations only until the package is marked "out for delivery." After this point, no further edits are allowed to ensure delivery consistency.
+3. Backend Updates: Destination changes are managed through Django views, ensuring immediate updates in the database.
+4. Data Synchronization with Amazon: Once out for delivery, the package's latest destination from our database is sent to Amazon, allowing them to track the package effectively.
+
+
+Special request
+1. When users purchase on Amazon and enter their UPS user ID, they'll be asked to input their unique UPS profile ID (a number) instead of their username. This ensures accuracy in UPS tracking.
+2. Each warehouse address must be unique. UPS will use the addresses to find the corresponding warehouse.

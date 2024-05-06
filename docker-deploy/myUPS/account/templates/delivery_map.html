@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-left mt-5">
+    <h1>Delivery Map</h1>
+
+    <li class="list-group-item">
+        <div class="row">
+            {% if package.user_id %}
+            {% if user.is_authenticated %}
+            {% if package.user_id_id == request.user.id %}
+            <div class="col">
+                <div class="mt-4">
+                    <h2>Delivery Route</h2>
+                    <div style="max-width: 600px; max-height: 400px; margin: auto;">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-auto d-flex align-items-start">
+                This package does not belong to your UPS account!
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="col">
+                <div class="mt-4">
+                    <h2>Delivery Route</h2>
+                    <div style="max-width: 600px; max-height: 400px; margin: auto;">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="col">
+                <div class="mt-4">
+                    <h2>Delivery Route</h2>
+                    <div style="max-width: 600px; max-height: 400px; margin: auto;">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </li>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d')
+    var warehouse_x = Number('{{ warehouse_x }}')
+    var warehouse_y = Number('{{ warehouse_y }}')
+    var dest_x = Number('{{ dest_x }}')
+    var dest_y = Number('{{ dest_y }}')
+
+    var myChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Warehouse',
+                data: [{ x: warehouse_x, y: warehouse_y }],
+                pointBackgroundColor: 'green',
+                pointBorderColor: 'green',
+                pointRadius: 7,
+                pointStyle: 'rectRot',
+            }, {
+                label: 'Destination',
+                data: [{ x: dest_x, y: dest_y }],
+                pointBackgroundColor: 'red',
+                pointBorderColor: 'red',
+                pointRadius: 7,
+                pointStyle: 'circle',
+            }, {
+                label: 'Route',
+                data: [{ x: warehouse_x, y: warehouse_y }, { x: dest_x, y: dest_y }],
+                borderColor: 'blue',
+                borderWidth: 2,
+                fill: false,
+                showLine: true,
+                pointRadius: 0,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: 1.5,
+            legend: {
+                position: 'bottom'
+            },
+            scales: {
+                xAxes: [{
+                    type: 'linear',
+                    position: 'bottom',
+                    ticks: {
+                        beginAtZero: false,
+                        suggestedMin: Math.min(warehouse_x, dest_x) - 1, // Padding for readability
+                        suggestedMax: Math.max(warehouse_x, dest_x) + 1
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'X Coordinate'
+                    }
+                }],
+                yAxes: [{
+                    type: 'linear',
+                    ticks: {
+                        beginAtZero: false,
+                        suggestedMin: Math.min(warehouse_y, dest_y) - 1, // Padding for readability
+                        suggestedMax: Math.max(warehouse_y, dest_y) + 1
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Y Coordinate'
+                    }
+                }]
+            }
+        }
+    });
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    {% if not user.is_authenticated %}
+    <h1>You are not logged in!</h1>
+    <p>Not registered yet? <a href="/register/" class="btn btn-outline-warning">Register</a></p>
+    <p>Already have an account? <a href="/user_login/" class="btn btn-outline-warning">Login</a></p>
+
+    {% else %}
+    <h1>Welcome, {{ request.user.username }}!</h1>
+
+    <div class="row justify-content-center mt-5">
+        <!-- Personal Information Box with Warning Theme -->
+        <div class="col-md-4 mb-3">
+            <div class="card border-warning">
+                <div class="card-header bg-warning text-white">
+                    Personal Information
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Username: {{ request.user.username }}</p>
+                    <p class="card-text">UserID: {{ request.user.id }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

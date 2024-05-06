@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-left mt-5">
+    {% if user.is_authenticated %}
+    <h1>My Packages</h1>
+    {% if packages %}
+    <ul class="list-group">
+        {% for package in packages %}
+        {% if package.user_id_id == request.user.id %}
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col">
+                    <div>
+                        <h2>Package ID: {{ package.packageid }}</h2>
+                    </div>
+                    <div>
+                        <p>Status: {{ package.status }}</p>
+                    </div>
+                </div>
+                <div class="col-auto d-flex align-items-start">
+                    <a href="{% url 'modify_dest' package.packageid %}" class="btn btn-outline-warning">Edit
+                        Destiniaton</a>
+                </div>
+                <div class="col-auto d-flex align-items-start">
+                    <a href="{% url 'product_details' package.packageid %}" class="btn btn-outline-warning">Product
+                        Details</a>
+                </div>
+                <div class="col-auto d-flex align-items-start">
+                    <a href="{% url 'delivery_map' package.packageid %}" class="btn btn-outline-warning">Delivery
+                        Map</a>
+                </div>
+            </div>
+        </li>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <p>No packages found.</p>
+        {% endif %}
+    </ul>
+    {% else %}
+    <h1>You are not log in!</h1>
+    <p><a href="{% url 'user_login' %}">Log In</a></p>
+    {% endif %}
+</div>
+
+{% endblock %}
