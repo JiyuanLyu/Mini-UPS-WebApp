@@ -1,8 +1,4 @@
-# ERSS-project-yz853-jl1230
-# ECE 568
-# Final Project
-
-## Mini-UPS website
+# Mini-UPS website
 
 Developer: Chelsea (Jiyuan) Lyu - jl1230,
            Yijia Zhao - yz853
