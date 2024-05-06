@@ -1,7 +1,6 @@
 # Mini-UPS website
 
-Developer: Chelsea (Jiyuan) Lyu - jl1230,
-           Yijia Zhao - yz853
+Developer: Chelsea (Jiyuan) Lyu, Yijia Zhao
 
 This project simulates an online store (Mini-Amazon) and a shipping service (Mini-UPS), requiring integration between the two systems within an interoperability group. The systems communicate with a simulated world server, handling logistics without real-world warehouses and trucks.
 
